@@ -16,3 +16,12 @@ img {
   display: block;
   max-width: 100%;
 }
+
+.value, .label {
+  margin-bottom: 15px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 80px;
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
