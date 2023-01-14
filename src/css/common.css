@@ -17,11 +17,22 @@ img {
   max-width: 100%;
 }
 
-.value, .label {
-  margin-bottom: 15px;
-  font-family: 'Roboto Mono', monospace;
-  font-size: 80px;
-  margin-top: 0;
-  margin-bottom: 24px;
+.field {
+  display:inline-flex;
+  flex-direction: column;
+
 }
 
+.value {
+  display: flex;
+  font-family: system-ui;
+  font-size: 45px;
+  justify-content: space-around;
+}
+
+.label {
+  display: flex;
+  font-family: system-ui;
+  font-size: 15px;
+  justify-content: center;
+}
