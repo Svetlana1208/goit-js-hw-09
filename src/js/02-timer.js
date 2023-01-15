@@ -8,11 +8,12 @@ const refs = {
   hours: document.querySelector('[data-hours]'),
   minutes: document.querySelector('[data-minutes]'),
   seconds: document.querySelector('[data-seconds]'),
-}
+};
 
 refs.btnStart.disabled = true;
 
-let deltaTime = null;
+let selectedDate = null;
+let timeLeft = {};
 
 const options = {
     enableTime: true,
@@ -23,40 +24,53 @@ const options = {
       if (selectedDates[0].getTime() < Date.now()) {
         refs.btnStart.disabled = true;
         alert("Please choose a date in the future");
-      } else if(selectedDates[0].getTime() > Date.now()) {
+      } else {
         refs.btnStart.disabled = false;
-        deltaTime = selectedDates[0].getTime() - Date.now();
+        selectedDate = selectedDates[0].getTime();
       }
     },
   };
 
+  const timer = {
+    intervalId: null,
+    start() {
+      const startTime = Date.now();
+  
+      this.intervalId = setInterval(() => {
+      const currentTime = Date.now();
+      const deltaTime = selectedDate - currentTime;
+      timeLeft = convertMs(deltaTime);
+      if(timeLeft.days === "00" && timeLeft.hours === "00" && timeLeft.minutes === "00" && timeLeft.seconds === "00") {
+        clearInterval(this.intervalId);
+      }
+      refs.days.textContent = timeLeft.days;
+      refs.hours.textContent = timeLeft.hours;
+      refs.minutes.textContent = timeLeft.minutes;
+      refs.seconds.textContent = timeLeft.seconds;
+    }, 1000);
+  },
+  };
+
+refs.btnStart.addEventListener('click', () => {
+  timer.start();
+});
+  
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+}
+
 flatpickr(refs.input, options);
 
-refs.btnStart.addEventListener('click', convertMs);
-
-convertMs(deltaTime);
-
-function convertMs() {
-  // Number of milliseconds per unit of time
+function convertMs(ms) {
   const second = 1000;
   const minute = second * 60;
   const hour = minute * 60;
   const day = hour * 24;
 
-  // Remaining days
-  const days = Math.floor(deltaTime/ day);
-  // Remaining hours
-  const hours = Math.floor((deltaTime % day) / hour);
-  // Remaining minutes
-  const minutes = Math.floor(((deltaTime % day) % hour) / minute);
-  // Remaining seconds
-  const seconds = Math.floor((((deltaTime % day) % hour) % minute) / second);
-
-  const timer = { days, hours, minutes, seconds };
-  refs.days.textContent = timer.days;
-  refs.hours.textContent = timer.hours;
-  refs.minutes.textContent = timer.minutes;
-  refs.seconds.textContent = timer.seconds;
+  const days = addLeadingZero(Math.floor(ms/ day));
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
+  const seconds = addLeadingZero(Math.floor((((ms % day) % hour) % minute) / second));
 
   return { days, hours, minutes, seconds };
 }
