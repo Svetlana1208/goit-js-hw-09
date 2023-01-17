@@ -44,9 +44,18 @@ function zxc(event) {
       }, delay);
       });
     };
- 
+  
+    let intervalId = null;
+
+    intervalId = setInterval(() => {
+      if(position === amount) {
+        clearInterval(intervalId);
+      }
+  
       createPromise(position, delay)
       .then(result => console.log(result))
       .catch(error => console.log(error));
-
-
+    }, step);
+  
+      
+};
