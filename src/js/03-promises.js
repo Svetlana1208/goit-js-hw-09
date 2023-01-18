@@ -1,3 +1,5 @@
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 const refs = {
   form: document.querySelector('.form'),
   delay: document.querySelector('.delay'),
@@ -35,11 +37,11 @@ function generator(event) {
 
       setTimeout(() => { 
         if (shouldResolve) {
-          resolve(`✅ Fulfilled promise ${position} in ${delay}ms`);
+          resolve(Notiflix.Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`));
         } else {
-          reject(`❌ Rejected promise ${position} in ${delay}ms`);
+          reject(Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`));
         }
-      }, delay);
+      }, step);
 
       });
     };
