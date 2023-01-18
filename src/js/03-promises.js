@@ -48,14 +48,12 @@ function zxc(event) {
     let intervalId = null;
 
     intervalId = setInterval(() => {
-      if(position === amount) {
-        clearInterval(intervalId);
-      }
-  
       createPromise(position, delay)
       .then(result => console.log(result))
-      .catch(error => console.log(error));
-    }, step);
-  
-      
+      .catch(error => console.log(error))
+      .finally(() => {
+        if(position === amount) {
+        clearInterval(intervalId);}
+      });
+    }, step); 
 };
